@@ -5,22 +5,23 @@
     <meta charset="UTF-8" />
     <title>Rock Paper Scissors</title>
     <link rel="stylesheet" href="css/App.css" />
-    <link rel="icon" type="image/png" href="img/favico.png" />
 </head>
 
 <body>
     <div class="top-bar">
-        <h1>Rock Paper Scissors</h1>
+        <img src="img/tipa-logo.svg" alt="">
+        <h2 id="score">Score: 0</h2>
         <button id="rules-btn">RULES</button>
     </div>
 
-    <div class="buttons">
-        <img src="img/rock.svg" class="btn" data-choice="rock" />
-        <img src="img/paper.svg" class="btn" data-choice="paper" />
-        <img src="img/scissors.svg" class="btn" data-choice="scissors" />
+    <div class="triangle-container">
+        <img src="img/triangle.svg" alt="Triangle" class="triangle-bg" />
+        <img src="img/rock.svg" class="btn rock" data-choice="rock" />
+        <img src="img/paper.svg" class="btn paper" data-choice="paper" />
+        <img src="img/scissors.svg" class="btn scissors" data-choice="scissors" />
     </div>
 
-    <div class="result-box">
+    <div class="result-box hidden">
         <div class="side" id="user-side">
             <h2>You</h2>
             <div id="user-choice" class="choice-box"></div>
@@ -31,7 +32,8 @@
         </div>
     </div>
 
-    <h2 id="result-text"></h2>
+    <h2 id="result-text" class="hidden"></h2>
+    <button id="play-again" class="hidden">Play Again</button>
 
     <div id="modal-overlay" class="modal-overlay hidden">
         <div class="modal">
@@ -40,7 +42,7 @@
         </div>
     </div>
 
-    <script src="js/App.js" type="module"></script>
+    <script type="module" src="js/App.js"></script>
 </body>
 
 </html>

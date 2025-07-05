@@ -8,8 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
@@ -38,6 +38,12 @@ var choices = ["rock", "paper", "scissors"];
 var userChoiceEl = document.getElementById("user-choice");
 var computerChoiceEl = document.getElementById("computer-choice");
 var resultText = document.getElementById("result-text");
+var scoreEl = document.getElementById("score");
+var triangleContainer = document.querySelector(".triangle-container");
+var resultBox = document.querySelector(".result-box");
+var playAgainBtn = document.getElementById("play-again");
+var userScore = 0;
+hideResults();
 document.querySelectorAll(".btn").forEach(function (btn) {
     btn.addEventListener("click", function () {
         var choice = btn.dataset.choice;
@@ -50,16 +56,20 @@ function playGame(userChoice) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    computerChoice = getRandomChoice();
+                    triangleContainer.classList.add("hidden");
+                    resultBox.classList.remove("hidden");
+                    resultText.classList.remove("hidden");
+                    playAgainBtn.classList.add("hidden");
                     userChoiceEl.innerHTML = "";
                     computerChoiceEl.innerHTML = "";
                     resultText.textContent = "";
+                    computerChoice = getRandomChoice();
                     userImg = createImage(userChoice);
                     userChoiceEl.appendChild(userImg);
                     skeleton = document.createElement("div");
                     skeleton.className = "skeleton";
                     computerChoiceEl.appendChild(skeleton);
-                    return [4, delay(1300)];
+                    return [4 /*yield*/, delay(1300)];
                 case 1:
                     _a.sent();
                     computerChoiceEl.innerHTML = "";
@@ -68,15 +78,28 @@ function playGame(userChoice) {
                     winner = getWinner(userChoice, computerChoice);
                     if (winner === "user") {
                         userImg.classList.add("winner", "aura");
+                        userScore++;
                     }
                     else if (winner === "computer") {
                         compImg.classList.add("winner", "aura");
+                        if (userScore > 0)
+                            userScore--;
                     }
                     resultText.textContent = getResultText(winner);
-                    return [2,];
+                    updateScore();
+                    playAgainBtn.classList.remove("hidden");
+                    return [2 /*return*/];
             }
         });
     });
+}
+function hideResults() {
+    resultBox.classList.add("hidden");
+    resultText.classList.add("hidden");
+    playAgainBtn.classList.add("hidden");
+}
+function updateScore() {
+    scoreEl.textContent = "Score: ".concat(userScore);
 }
 function delay(ms) {
     return new Promise(function (resolve) { return setTimeout(resolve, ms); });
@@ -88,8 +111,7 @@ function createImage(choice) {
     return img;
 }
 function getRandomChoice() {
-    var index = Math.floor(Math.random() * choices.length);
-    return choices[index];
+    return choices[Math.floor(Math.random() * choices.length)];
 }
 function getWinner(user, computer) {
     if (user === computer)
@@ -107,22 +129,29 @@ function getResultText(result) {
         return "You Lose!";
     return "It's a Draw!";
 }
+playAgainBtn.addEventListener("click", function () {
+    triangleContainer.classList.remove("hidden");
+    hideResults();
+    userChoiceEl.innerHTML = "";
+    computerChoiceEl.innerHTML = "";
+});
+// Modal logic
 var rulesBtn = document.getElementById("rules-btn");
 var modalOverlay = document.getElementById("modal-overlay");
 var closeModalBtn = document.getElementById("close-modal");
-function openModal() {
+rulesBtn.addEventListener("click", function () {
     modalOverlay.classList.remove("hidden");
-}
-function closeModal() {
+});
+closeModalBtn.addEventListener("click", function () {
     modalOverlay.classList.add("hidden");
-}
-rulesBtn.addEventListener("click", openModal);
-closeModalBtn.addEventListener("click", closeModal);
+});
 modalOverlay.addEventListener("click", function (e) {
-    if (e.target === modalOverlay)
-        closeModal();
+    if (e.target === modalOverlay) {
+        modalOverlay.classList.add("hidden");
+    }
 });
 document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape")
-        closeModal();
+    if (e.key === "Escape") {
+        modalOverlay.classList.add("hidden");
+    }
 });

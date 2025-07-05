@@ -4,6 +4,13 @@ const choices: Choice[] = ["rock", "paper", "scissors"];
 const userChoiceEl = document.getElementById("user-choice")!;
 const computerChoiceEl = document.getElementById("computer-choice")!;
 const resultText = document.getElementById("result-text")!;
+const scoreEl = document.getElementById("score")!;
+const triangleContainer = document.querySelector(".triangle-container") as HTMLDivElement;
+const resultBox = document.querySelector(".result-box") as HTMLDivElement;
+const playAgainBtn = document.getElementById("play-again") as HTMLButtonElement;
+
+let userScore = 0;
+hideResults();
 
 document.querySelectorAll(".btn").forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -13,11 +20,16 @@ document.querySelectorAll(".btn").forEach((btn) => {
 });
 
 async function playGame(userChoice: Choice): Promise<void> {
-    const computerChoice = getRandomChoice();
+    triangleContainer.classList.add("hidden");
+    resultBox.classList.remove("hidden");
+    resultText.classList.remove("hidden");
+    playAgainBtn.classList.add("hidden");
 
     userChoiceEl.innerHTML = "";
     computerChoiceEl.innerHTML = "";
     resultText.textContent = "";
+
+    const computerChoice = getRandomChoice();
 
     const userImg = createImage(userChoice);
     userChoiceEl.appendChild(userImg);
@@ -33,14 +45,27 @@ async function playGame(userChoice: Choice): Promise<void> {
     computerChoiceEl.appendChild(compImg);
 
     const winner = getWinner(userChoice, computerChoice);
-
     if (winner === "user") {
         userImg.classList.add("winner", "aura");
+        userScore++;
     } else if (winner === "computer") {
         compImg.classList.add("winner", "aura");
+        if (userScore > 0) userScore--;
     }
 
     resultText.textContent = getResultText(winner);
+    updateScore();
+    playAgainBtn.classList.remove("hidden");
+}
+
+function hideResults() {
+    resultBox.classList.add("hidden");
+    resultText.classList.add("hidden");
+    playAgainBtn.classList.add("hidden");
+}
+
+function updateScore() {
+    scoreEl.textContent = `Score: ${userScore}`;
 }
 
 function delay(ms: number): Promise<void> {
@@ -55,8 +80,7 @@ function createImage(choice: Choice): HTMLImageElement {
 }
 
 function getRandomChoice(): Choice {
-    const index = Math.floor(Math.random() * choices.length);
-    return choices[index];
+    return choices[Math.floor(Math.random() * choices.length)];
 }
 
 function getWinner(user: Choice, computer: Choice): "user" | "computer" | "draw" {
@@ -75,25 +99,34 @@ function getResultText(result: "user" | "computer" | "draw"): string {
     return "It's a Draw!";
 }
 
+playAgainBtn.addEventListener("click", () => {
+    triangleContainer.classList.remove("hidden");
+    hideResults();
+    userChoiceEl.innerHTML = "";
+    computerChoiceEl.innerHTML = "";
+});
+
+// Modal logic
 const rulesBtn = document.getElementById("rules-btn")!;
 const modalOverlay = document.getElementById("modal-overlay")!;
 const closeModalBtn = document.getElementById("close-modal")!;
 
-function openModal() {
+rulesBtn.addEventListener("click", () => {
     modalOverlay.classList.remove("hidden");
-}
+});
 
-function closeModal() {
+closeModalBtn.addEventListener("click", () => {
     modalOverlay.classList.add("hidden");
-}
-
-rulesBtn.addEventListener("click", openModal);
-closeModalBtn.addEventListener("click", closeModal);
+});
 
 modalOverlay.addEventListener("click", (e) => {
-    if (e.target === modalOverlay) closeModal();
+    if (e.target === modalOverlay) {
+        modalOverlay.classList.add("hidden");
+    }
 });
 
 document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
+    if (e.key === "Escape") {
+        modalOverlay.classList.add("hidden");
+    }
 });
