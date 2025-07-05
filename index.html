@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="css/App.css" />
+</head>
+
+<body>
+    <div class="top-bar">
+        <h1>Rock Paper Scissors</h1>
+        <button id="rules-btn">RULES</button>
+    </div>
+
+    <div class="buttons">
+        <img src="img/rock.svg" class="btn" data-choice="rock" />
+        <img src="img/paper.svg" class="btn" data-choice="paper" />
+        <img src="img/scissors.svg" class="btn" data-choice="scissors" />
+    </div>
+
+    <div class="result-box">
+        <div class="side" id="user-side">
+            <h2>You</h2>
+            <div id="user-choice" class="choice-box"></div>
+        </div>
+        <div class="side" id="computer-side">
+            <h2>Robot</h2>
+            <div id="computer-choice" class="choice-box"></div>
+        </div>
+    </div>
+
+    <h2 id="result-text"></h2>
+
+    <div id="modal-overlay" class="modal-overlay hidden">
+        <div class="modal">
+            <button class="close-btn" id="close-modal">✖</button>
+            <img src="img/rule-basic.svg" alt="Rules" />
+        </div>
+    </div>
+
+    <script src="js/App.js" type="module"></script>
+</body>
+
+</html>
