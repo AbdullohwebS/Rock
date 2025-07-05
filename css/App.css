@@ -9,13 +9,16 @@ body {
 
 .top-bar {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     padding: 0 20px;
     margin-bottom: 30px;
 }
 
 #rules-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
     padding: 8px 20px;
     font-size: 14px;
     background-color: white;
@@ -23,27 +26,29 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 #score {
     background-color: white;
     color: #1F3757;
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 10px;
+    font-size: 14px;
     font-weight: bold;
-    border-radius: 12px;
+    border-radius: 5px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    margin-top: 15px;
-    letter-spacing: 1px;
-    transition: transform 0.2s ease;
+    min-width: 70px;
 }
 
 .triangle-container {
     position: relative;
     width: 300px;
     height: 270px;
-    margin: 0 auto;
+    margin: 130px auto;
 }
 
 .triangle-bg {
@@ -57,8 +62,8 @@ body {
 
 .btn {
     position: absolute;
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 150px;
     cursor: pointer;
     z-index: 1;
     transition: transform 0.2s ease;
@@ -66,17 +71,17 @@ body {
 
 
 .rock {
-    top: 0;
-    left: 0;
+    top: -50px;
+    left: -50px;
 }
 
 .paper {
-    top: 0;
-    right: 0;
+    top: -50px;
+    right: -50px;
 }
 
 .scissors {
-    bottom: 0;
+    bottom: -30px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -103,12 +108,13 @@ body {
 }
 
 .skeleton {
-    width: 100px;
-    height: 100px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     background: linear-gradient(90deg, #ccc 25%, #e0e0e0 50%, #ccc 75%);
     background-size: 200% 100%;
     animation: shimmer 1s infinite;
+    display: inline-block;
 }
 
 @keyframes shimmer {

@@ -43,7 +43,11 @@ var triangleContainer = document.querySelector(".triangle-container");
 var resultBox = document.querySelector(".result-box");
 var playAgainBtn = document.getElementById("play-again");
 var userScore = 0;
-hideResults();
+// === Initial State ===
+resultBox.classList.add("hidden");
+resultText.classList.add("hidden");
+playAgainBtn.classList.add("hidden");
+// === Game Logic ===
 document.querySelectorAll(".btn").forEach(function (btn) {
     btn.addEventListener("click", function () {
         var choice = btn.dataset.choice;
@@ -56,62 +60,66 @@ function playGame(userChoice) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    computerChoice = getRandomChoice();
+                    // Hide buttons
                     triangleContainer.classList.add("hidden");
+                    // Show result box
                     resultBox.classList.remove("hidden");
                     resultText.classList.remove("hidden");
-                    playAgainBtn.classList.add("hidden");
+                    playAgainBtn.classList.remove("hidden");
+                    // Clear previous
                     userChoiceEl.innerHTML = "";
                     computerChoiceEl.innerHTML = "";
                     resultText.textContent = "";
-                    computerChoice = getRandomChoice();
                     userImg = createImage(userChoice);
                     userChoiceEl.appendChild(userImg);
                     skeleton = document.createElement("div");
                     skeleton.className = "skeleton";
                     computerChoiceEl.appendChild(skeleton);
+                    // Delay
                     return [4 /*yield*/, delay(1300)];
                 case 1:
+                    // Delay
                     _a.sent();
+                    // Show computer choice
                     computerChoiceEl.innerHTML = "";
                     compImg = createImage(computerChoice);
                     computerChoiceEl.appendChild(compImg);
                     winner = getWinner(userChoice, computerChoice);
                     if (winner === "user") {
-                        userImg.classList.add("winner", "aura");
+                        userImg.classList.add("winner");
                         userScore++;
                     }
                     else if (winner === "computer") {
-                        compImg.classList.add("winner", "aura");
+                        compImg.classList.add("winner");
                         if (userScore > 0)
                             userScore--;
                     }
-                    resultText.textContent = getResultText(winner);
                     updateScore();
-                    playAgainBtn.classList.remove("hidden");
+                    resultText.textContent = getResultText(winner);
                     return [2 /*return*/];
             }
         });
     });
 }
-function hideResults() {
-    resultBox.classList.add("hidden");
-    resultText.classList.add("hidden");
-    playAgainBtn.classList.add("hidden");
-}
+// === Utilities ===
 function updateScore() {
-    scoreEl.textContent = "Score: ".concat(userScore);
+    scoreEl.innerHTML = "\n    <span style=\"font-size: 12px;\">SCORE</span>\n    <span style=\"font-size: 28px;\">".concat(userScore, "</span>\n  ");
 }
 function delay(ms) {
-    return new Promise(function (resolve) { return setTimeout(resolve, ms); });
+    return new Promise(function (res) { return setTimeout(res, ms); });
 }
 function createImage(choice) {
     var img = document.createElement("img");
     img.src = "img/".concat(choice, ".svg");
     img.alt = choice;
+    img.style.width = "140px";
+    img.style.height = "150px";
     return img;
 }
 function getRandomChoice() {
-    return choices[Math.floor(Math.random() * choices.length)];
+    var index = Math.floor(Math.random() * choices.length);
+    return choices[index];
 }
 function getWinner(user, computer) {
     if (user === computer)
@@ -129,29 +137,24 @@ function getResultText(result) {
         return "You Lose!";
     return "It's a Draw!";
 }
+// === Play Again ===
 playAgainBtn.addEventListener("click", function () {
     triangleContainer.classList.remove("hidden");
-    hideResults();
-    userChoiceEl.innerHTML = "";
-    computerChoiceEl.innerHTML = "";
+    resultBox.classList.add("hidden");
+    resultText.classList.add("hidden");
+    playAgainBtn.classList.add("hidden");
 });
-// Modal logic
+// === Modal ===
 var rulesBtn = document.getElementById("rules-btn");
 var modalOverlay = document.getElementById("modal-overlay");
 var closeModalBtn = document.getElementById("close-modal");
-rulesBtn.addEventListener("click", function () {
-    modalOverlay.classList.remove("hidden");
-});
-closeModalBtn.addEventListener("click", function () {
-    modalOverlay.classList.add("hidden");
-});
+rulesBtn.addEventListener("click", function () { return modalOverlay.classList.remove("hidden"); });
+closeModalBtn.addEventListener("click", function () { return modalOverlay.classList.add("hidden"); });
 modalOverlay.addEventListener("click", function (e) {
-    if (e.target === modalOverlay) {
+    if (e.target === modalOverlay)
         modalOverlay.classList.add("hidden");
-    }
 });
 document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
+    if (e.key === "Escape")
         modalOverlay.classList.add("hidden");
-    }
 });
